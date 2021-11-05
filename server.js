@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 var PORT = process.env.PORT | 4000;
 require('dotenv').config();
+const schedule = require('node-schedule');
 
 // create express app
 const app = express();
@@ -48,6 +49,12 @@ app.get("/", (req, res) => {
 
 //routes
 require("./app/routes/routes.js")(app);
+
+//Test scheduler
+
+// const job = schedule.scheduleJob("*/1 * * * *", function(){
+//   console.log('The world is going to end today.');
+// });
 
 // listen for requests
 app.listen(PORT, () => {

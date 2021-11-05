@@ -25,10 +25,15 @@ module.exports = (app) => {
     app.patch("/resetPassword", users.resetPassword);
 
     //Send SMS to single
-    app.post("/send/single", sms.sendSingle);
+    app.post("/send/single", auth, sms.sendSingle);
 
     //Send SMS to CSV
-    app.post("/send/csv", sms.sendCSV);
-  
+    app.post("/send/csv", auth, sms.sendCSV);
+
+    //get app details
+    app.get("/apps/:userId/:appId", users.findOneApp);
+
+    //Add app
+    app.post("/user/:userId", users.addApp);
   };
   

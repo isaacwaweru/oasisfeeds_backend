@@ -222,3 +222,46 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+// Find a single app with a appId
+exports.findOneApp = (req, res) => {
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          message: "App not found with id " + req.params.appId,
+        });
+      }
+      const apps = user.apps;
+      const app = apps.filter(function (el) {
+            return el.api_key === req.params.appId;
+        })
+      res.send(app[0]);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          message: "App not found with id " + req.params.appId,
+        });
+      }
+      return res.status(500).send({
+        message: "Error retrieving app with id " + req.params.appId,
+      });
+    });
+};
+
+//User add app
+exports.addApp = async (req, res) => {
+  const user = await User.findOne({_id: req.params.userId});
+  user.apps.push(req.body)
+  const response = await user.save().then(() => {
+      res.status(200).json({
+          message: "App requested successfully!",
+      });
+  })
+      .catch((error) => {
+          res.status(500).json({
+              error: error,
+          });
+      });
+}

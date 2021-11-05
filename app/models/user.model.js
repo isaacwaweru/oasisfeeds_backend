@@ -13,6 +13,7 @@ const UserSchema = mongoose.Schema(
     location: { type: String },
     apps: [],
     messages: [],
+    contacts: [],
     passwordChangedAt: Date,
     passwordResetToken:  { type: String },
     passwordResetExpires: Date,
